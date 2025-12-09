@@ -1,0 +1,39 @@
+BOXES_NAME = [
+    "server-22",
+    "server-25",
+    "win10-ltsc",
+    "win10",
+    "win11"
+]
+
+COUNT_VM = 3
+
+VM_MEMORY = 8192
+VM_CORES = 4
+
+WINRM_USER = "Administrator"
+
+Vagrant.configure("2") do |config|
+    config.vm.communicator = "winrm"
+    config.winrm.username = WINRM_USER
+
+    config.vm.synced_folder ".", "/vagrant", disabled: true 
+
+    BOXES_NAME.each do |box_name|
+        (1..COUNT_VM).each do |vm_id|
+        
+            instance = "#{box_name}-#{vm_id}" 
+
+            config.vm.define instance do |item|
+                item.vm.box = box_name
+                
+                item.vm.provider "virtualbox" do |vb|
+                    vb.name = instance
+                    vb.memory = VM_MEMORY
+                    vb.cpus = VM_CORES
+                    vb.gui = true
+                end
+            end
+        end
+    end
+end
