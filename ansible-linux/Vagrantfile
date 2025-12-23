@@ -1,6 +1,6 @@
 VM_DEFINITIONS = {
     "debian-vm": {
-        box: "debian-12-vbox",
+        box: "debian-13-vbox",
         base_name_vm: "debian-vm",
         base_ip_octet: 20
     },
