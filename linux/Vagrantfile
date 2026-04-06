@@ -1,11 +1,11 @@
 VM_DEFINITIONS = {
     "debian-vm": {
-        box: "debian-13-vbox",
+        box: "debian-13",
         base_name_vm: "debian-vm",
         base_ip_octet: 20
     },
     "ubuntu-vm": {
-        box: "ubuntu-24.04-lts-vbox",
+        box: "ubuntu-24.04-lts",
         base_name_vm: "ubuntu-vm",
         base_ip_octet: 30
     }
@@ -18,7 +18,7 @@ VM_CORES = 2
 
 SSH_USER = "root"
 
-SUBNET = "192.168.56."
+SUBNET = "192.168.150."
 
 Vagrant.configure("2") do |config|
     config.vm.box_check_update = false
@@ -43,10 +43,10 @@ Vagrant.configure("2") do |config|
                 
                 item.vm.network "private_network", ip: static_ip
                 
-                item.vm.provider "virtualbox" do |vb|
-                    vb.name = instance_name
-                    vb.memory = VM_MEMORY
-                    vb.cpus = VM_CORES
+                item.vm.provider "vmware_desktop" do |vmw|
+                    vmw.memory = VM_MEMORY
+                    vmw.cpus = VM_CORES
+                    vmw.vmx["displayname"] = instance_name
                 end
             end
         end
