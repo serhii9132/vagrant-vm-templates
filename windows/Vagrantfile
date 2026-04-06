@@ -2,7 +2,6 @@ BOXES_NAME = [
     "server-22",
     "server-25",
     "win10-ltsc",
-    "win10",
     "win11"
 ]
 
@@ -14,6 +13,8 @@ VM_CORES = 4
 WINRM_USER = "Administrator"
 
 Vagrant.configure("2") do |config|
+    config.vm.box_check_update = false
+
     config.vm.communicator = "winrm"
     config.winrm.username = WINRM_USER
 
@@ -27,11 +28,11 @@ Vagrant.configure("2") do |config|
             config.vm.define instance do |item|
                 item.vm.box = box_name
                 
-                item.vm.provider "virtualbox" do |vb|
-                    vb.name = instance
-                    vb.memory = VM_MEMORY
-                    vb.cpus = VM_CORES
-                    vb.gui = true
+                item.vm.provider "vmware_desktop" do |vmw|
+                    vmw.memory = VM_MEMORY
+                    vmw.cpus = VM_CORES
+                    vmw.gui = true
+                    vmw.vmx["displayname"] = instance
                 end
             end
         end
