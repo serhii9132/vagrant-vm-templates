@@ -1,8 +1,7 @@
 BOXES_NAME = [
     "server-22",
     "server-25",
-    "win10-ltsc",
-    "win11"
+    "win-11"
 ]
 
 COUNT_VM = 3
@@ -10,13 +9,16 @@ COUNT_VM = 3
 VM_MEMORY = 8192
 VM_CORES = 4
 
-WINRM_USER = "Administrator"
-
 Vagrant.configure("2") do |config|
+    config.env.enable
     config.vm.box_check_update = false
-
+        
     config.vm.communicator = "winrm"
-    config.winrm.username = WINRM_USER
+    config.winrm.username = ENV['WINRM_USER']
+    config.winrm.password = ENV['WINRM_PASSWORD']
+    config.winrm.ssl_peer_verification = false
+    config.winrm.transport = :ssl
+    config.winrm.port = 5986
 
     config.vm.synced_folder ".", "/vagrant", disabled: true 
 
